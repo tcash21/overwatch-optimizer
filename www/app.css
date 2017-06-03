@@ -1,0 +1,51 @@
+
+caption {
+  font-size: 20px;
+}
+
+.shiny-progress {
+  top: 50% !important;
+  left: 50% !important;
+  margin-top: -100px !important;
+  margin-left: -250px !important;
+}
+
+
+.nav_logo {
+        margin-top: 10px;
+        margin-left: auto;
+        margin-right: auto;
+}
+
+.skin-blue .left-side, .skin-blue .main-sidebar, .skin-blue .wrapper {
+    background-color: #fff;
+
+}
+
+
+/*#222d32*/
+
+.logo {
+  background-image: url('overwatch.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-color: #fff;
+  background-position: center center;
+}
+
+.skin-blue .main-header .logo {
+  background-color: #fff;
+}
+
+.sidebar {
+  color: #333;
+}
+
+.skin-blue .main-header .navbar {
+    background-color: #fff;
+}
+
+
+.skin-blue .main-header .logo:hover{
+  background-color:#FA9C1E; 
+}
