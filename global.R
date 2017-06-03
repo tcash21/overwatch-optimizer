@@ -13,8 +13,8 @@ library(curl)
 options(stringsAsFactors = FALSE)
 set_config( config( ssl_verifypeer = 0L ) )
 
-load("results.Rdata")
-load("char_lookup.Rdata")
+load("data/results.Rdata")
+load("data/char_lookup.Rdata")
 
 source("herostats.R")
 
