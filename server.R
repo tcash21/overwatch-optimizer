@@ -1,4 +1,4 @@
-
+library(shiny)
 
 
 range01 <- function(x){(x-min(x))/(max(x)-min(x))}
@@ -10,10 +10,17 @@ server <- function(input, output) {
   new_players <- reactiveValues()
   new_players$list <- list()
   the_stats <- reactiveValues(stats = final)
+  the_stats_qp <- reactiveValues(stats = final_q)
   table_results <- reactiveValues(results = all_results)
+  table_results_q <- reactiveValues(results = all_results_q)
   
   observeEvent(input$reset2, {
-    the_stats$stats <- final
+    if(input$type == 'qp'){
+      the_stats_qp$stats <- final_q
+    } else {
+      the_stats$stats <- final
+    }
+    
   })
   
   observeEvent(input$add_player, {
@@ -27,7 +34,7 @@ server <- function(input, output) {
         stats <- fromJSON(content(r, 'text'))
         i <- length(results) + 1
         results[[i]] <- stats
-        hs <- lapply(results, function(x) parseHeroStats(x))
+        hs <- lapply(results, function(x) parseHeroStats(x, mode=input$type))
         all_results <- sapply(heroes, function(x) calculateScores(x, hs))
         table_results$results <- all_results
         
@@ -37,6 +44,7 @@ server <- function(input, output) {
         updated <-do.call('rbind', updated)
         updated$type <- char_type[match(updated$hero, char_type$heroes),]$type
         the_stats$stats <- updated
+        the_stats_qp$stats <- updated
     })
   })
   
@@ -57,7 +65,11 @@ server <- function(input, output) {
   
   parseStats <- reactive({
     if(length(players$list) >= 6){
-      some_stats <- subset(the_stats$stats, games_played >= as.numeric(input$min_gp))
+      if(input$type == 'qp'){
+        some_stats <- subset(the_stats_qp$stats, time_played >= as.numeric(input$min_gp))
+      } else if (input$type == 'comp'){
+        some_stats <- subset(the_stats$stats, games_played >= as.numeric(input$min_gp))
+      }
       some_stats$id <- 1:nrow(some_stats)
       return(some_stats)
     }
@@ -73,21 +85,7 @@ server <- function(input, output) {
     con <- rbind(t(model.matrix(~ type + 0, player_stats)), t(model.matrix(~ hero + 0, player_stats)), t(model.matrix(~ user + 0, player_stats)), rep(1, nrow(player_stats)))
     dir <- c("=", "=", "=", "=", rep("<=", length(unique(player_stats$hero))), rep("<=", length(unique(player_stats$user))), "=")
     rhs <- c(input$damage,input$defense,input$support,input$tank, rep(1, length(unique(player_stats$hero))), rep(1, length(unique(player_stats$user))), 6)
-    # 
-    # if(input$objective == 'Medals Per Game'){
-    #   obj <- player_stats$mpg
-    # } else if(input$objective == 'On Fire Per Game'){
-    #   obj <- player_stats$fire
-    # } else if(input$objective == 'Gold Medals Per Game'){
-    #   obj <- player_stats$gmpg
-    # } else if(input$objective == 'Healing + Damage'){
-    #   obj <- player_stats$key_metric
-    # } else if (input$objective == 'Healing + Elims'){
-    #   obj <- player_stats$key_metric2
-    # } else if (input$objective == 'Objective Time'){
-    #   obj <- player_stats$obj_avg
-    # }
-    
+  
     obj <- player_stats$scaled
     opt <- lp("max", obj, con, dir, rhs, all.bin=TRUE)
     optcomp <- player_stats[which(opt$solution == 1),]
@@ -99,27 +97,22 @@ server <- function(input, output) {
     selectedRow <- as.numeric(strsplit(input$select_button, "_")[[1]][2])
     player_stats <- parseStats()
     user <- player_stats[match(selectedRow, player_stats$id),]$user
-    
-    the_stats$stats <- the_stats$stats[-which(the_stats$stats$user %in% user),]
+    if(input$type == 'qp'){
+      the_stats_qp$stats <- the_stats_qp$stats[-which(the_stats_qp$stats$user %in% user),]
+    } else {
+      the_stats$stats <- the_stats$stats[-which(the_stats$stats$user %in% user),]
+    }
     
   })
   
    output$table2 <- DT::renderDataTable({
-  #   player_stats <- parseStats()
-  #   y_value <- switch(input$objective, 
-  #                     
-  #                     'Medals Per Game'= player_stats$mpg,
-  #                     'On Fire Per Game'= player_stats$fire,
-  #                     'Gold Medals Per Game'= player_stats$gmpg,
-  #                     'Healing + Damage'= player_stats$key_metric,
-  #                     'Healing + Elims'= player_stats$key_metric2,
-  #                     'Objective Time' = player_stats$obj_avg)
-  #   player_stats$y_value <- y_value
-  #   x <- subset(player_stats, hero == input$hero)
-  #  ggplot(x, aes(x=reorder(user, -y_value), y=y_value, fill=games_played)) + geom_bar(stat='identity') + labs(y = input$objective, title=input$hero) + theme_gray(base_size = 16)
-  
-     x <- table_results$results[[which(names(table_results$results) == input$hero)]]
-     x <- subset(x, games_played >= as.numeric(input$min_gp))
+     if(input$type == 'comp'){
+       x <- table_results$results[[which(names(table_results$results) == input$hero)]]
+       x <- subset(x, games_played >= as.numeric(input$min_gp))
+     } else if (input$type == 'qp'){
+       x <- table_results_q$results[[which(names(table_results_q$results) == input$hero)]]
+       x <- subset(x, tp >= as.numeric(input$min_gp))
+     }
      y<-x[, grep("per_min", colnames(x))]
      remove <- c("win_percentage_per_min", "eliminations_per_life_per_min", "critical_hit_accuracy_per_min", "weapon_accuracy_per_min", "games_played_per_min")
      i <- match(remove, colnames(y), 0)
@@ -130,4 +123,15 @@ server <- function(input, output) {
      y <- y[order(y$Score, decreasing=TRUE),]
      datatable(y, caption=paste0('User stats for ', input$hero), options = list(scrollX = TRUE, order = list(2, 'desc')))
       })
+   
+   
+   output$table3 <- DT::renderDataTable({
+     player_stats <- parseStats()
+     player_stats$hero <- as.character(player_stats$hero)
+     player_stats$user <- as.character(player_stats$user)
+     the_player <- gsub("\\#", "-", input$newPlayer)
+     player_stats[match(tolower(the_player), tolower(player_stats$user)),]
+     
+   })
 }
+

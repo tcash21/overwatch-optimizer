@@ -1,8 +1,15 @@
 
-parseHeroStats <- function(user){
-  heroes <- names(user$us$heroes$stats$competitive)
-  username <- unlist(str_extract_all(user$`_request`$route, "\\w+-\\d+"))
-  user <- user$us$heroes$stats$competitive
+parseHeroStats <- function(user, mode='comp'){
+  if(mode == 'comp'){
+    heroes <- names(user$us$heroes$stats$competitive)
+    username <- unlist(str_extract_all(user$`_request`$route, "\\w+-\\d+"))
+    user <- user$us$heroes$stats$competitive
+  } else if (mode == 'qp'){
+    heroes <- names(user$us$heroes$stats$quickplay)
+    username <- unlist(str_extract_all(user$`_request`$route, "\\w+-\\d+"))
+    user <- user$us$heroes$stats$quickplay
+  }
+ 
   stats <- list()
   for(hero in heroes){
     if(hero == 'reaper'){

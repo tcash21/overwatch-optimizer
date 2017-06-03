@@ -29,14 +29,18 @@ heroes <- unique(unlist(lapply(results, function(x) names(x$us$heroes$stats$comp
 char_type <- data.frame(heroes)
 char_type$type <- c("damage", "defense", "tank", "damage", "defense", "support", "support", "damage", "defense", "tank", "defense", "damage", "defense", "tank", "tank", "support", "damage", "support", "support", "defense", "damage", "damage", "tank", "tank")
 
+heroes_q <- unique(unlist(lapply(results, function(x) names(x$us$heroes$stats$quickplay))))
+
+
 source("herostats.R")
 load("data/char_lookup.Rdata")
 
-g <- lapply(results, function(x) parseHeroStats(x))
+g <- lapply(results, function(x) parseHeroStats(x, mode='comp'))
+gq <- lapply(results, function(x) parseHeroStats(x, mode='qp'))
 
-calculateScores <- function(hero){
-  print(hero)
-  y <- lapply(g, function(x) x[[hero]])
+
+calculateScores <- function(hero, thedata){
+  y <- lapply(thedata, function(x) x[[hero]])
   r <- do.call('rbind', y)
   if(!is.null(r)){
     r[which(r == 'NULL')] <- 0
@@ -97,13 +101,21 @@ calculateScores <- function(hero){
 }
 
 
-all_results <- sapply(heroes, function(x) calculateScores(x))
+all_results <- sapply(heroes, function(x) calculateScores(x, g))
 needed_fields <- lapply(all_results, function(x) data.frame(hero=x$hero, user=x$username, score=x$score, games_played=x$games_played))
 scaled_scores <- lapply(needed_fields, function(y) range01(y$score))
 final <- mapply(cbind, needed_fields, scaled=scaled_scores)
 
 final <-do.call('rbind', final)
 final$type <- char_lookup[match(final$hero, char_lookup$heroes),]$type
+
+all_results_q <- sapply(heroes_q, function(x) calculateScores(x, gq))
+needed_fields_q <- lapply(all_results_q, function(x) data.frame(hero=x$hero, user=x$username, score=x$score, time_played=x$tp))
+scaled_scores_q <- lapply(needed_fields_q, function(y) range01(y$score))
+final_q <- mapply(cbind, needed_fields_q, scaled=scaled_scores_q)
+
+final_q <-do.call('rbind', final_q)
+final_q$type <- char_lookup[match(final_q$hero, char_lookup$heroes),]$type
 
 save(results,file="data/results.Rdata")
 

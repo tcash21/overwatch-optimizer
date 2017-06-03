@@ -20,8 +20,10 @@ source("herostats.R")
 
 range01 <- function(x){(x-min(x))/(max(x)-min(x))}
 heroes <- unique(unlist(lapply(results, function(x) names(x$us$heroes$stats$competitive))))
-
-g <- lapply(results, function(x) parseHeroStats(x))
+heroes2 <- unique(unlist(lapply(results, function(x) names(x$us$heroes$stats$quickplay))))
+heroes <- unique(c(heroes, heroes2))
+g <- lapply(results, function(x) parseHeroStats(x, mode='comp'))
+gq <- lapply(results, function(x) parseHeroStats(x, mode='qp'))
 
 calculateScores <- function(hero, aLoP){
   y <- lapply(aLoP, function(x) x[[hero]])
@@ -91,3 +93,19 @@ final <- mapply(cbind, needed_fields, scaled=scaled_scores)
 
 final <-do.call('rbind', final)
 final$type <- char_lookup[match(final$hero, char_lookup$hero),]$type
+
+
+all_results_q <- sapply(heroes, function(x) calculateScores(x, gq))
+needed_fields_q <- lapply(all_results_q, function(x) data.frame(hero=x$hero, user=x$username, score=x$score, time_played=x$tp))
+if(any(unlist(lapply(needed_fields_q, function(x) any(is.na(x)))))){
+  i <- which(needed_fields_q[which(unlist(lapply(needed_fields_q, function(x) any(is.na(x)))))][[1]]$score == 'NaN')
+  needed_fields_q[which(unlist(lapply(needed_fields_q, function(x) any(is.na(x)))))][[1]] <- needed_fields_q[which(unlist(lapply(needed_fields_q, function(x) any(is.na(x)))))][[1]][-i,]
+}
+scaled_scores_q <- lapply(needed_fields_q, function(y) range01(y$score))
+final_q <- mapply(cbind, needed_fields_q, scaled=scaled_scores_q)
+
+final_q <-do.call('rbind', final_q)
+final_q$type <- char_lookup[match(final_q$hero, char_lookup$hero),]$type
+if(any(final_q$score == 'NaN')){
+  final_q <- final_q[-which(final_q$score == 'NaN'),]
+}

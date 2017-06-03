@@ -13,6 +13,7 @@ dashboardPage(
     ),
     uiOutput("textbox_ui"),
     uiOutput("newInputs"),
+    radioButtons('type', 'Game Mode:', choices=c('comp', 'qp'), selected = 'comp'),
    # htmlOutput("players"),
     numericInput(inputId='damage', label="# DPS", value=2, min=0, max=6, step=1),
     numericInput(inputId='tank', label="# Tank", value=2, min=0, max=6, step=1),
@@ -27,8 +28,14 @@ dashboardPage(
    uiOutput('about')
   ),
   dashboardBody(
-    DT::dataTableOutput('table1'),
-    DT::dataTableOutput('table2')
-    #plotOutput('plot1')
+    tabsetPanel(
+      tabPanel('Team Optimizer',
+               DT::dataTableOutput('table1'),
+               DT::dataTableOutput('table2')
+      ),
+      tabPanel('Hero Ranker',
+               DT::dataTableOutput('table3')
+      )
+    )
   )
 )
