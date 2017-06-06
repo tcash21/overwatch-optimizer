@@ -42,7 +42,7 @@ server <- function(input, output) {
         scaled_scores <- lapply(needed_fields, function(y) range01(y$score))
         updated <- mapply(cbind, needed_fields, scaled=scaled_scores)
         updated <-do.call('rbind', updated)
-        updated$type <- char_type[match(updated$hero, char_type$heroes),]$type
+        updated$type <- char_lookup[match(updated$hero, char_type$heroes),]$type
         the_stats$stats <- updated
         the_stats_qp$stats <- updated
     })
@@ -130,7 +130,7 @@ server <- function(input, output) {
      player_stats$hero <- as.character(player_stats$hero)
      player_stats$user <- as.character(player_stats$user)
      the_player <- gsub("\\#", "-", input$newPlayer)
-     player_stats[match(tolower(the_player), tolower(player_stats$user)),]
+     player_stats[tolower(player_stats$user) %in% tolower(the_player),]
      
    })
 }
