@@ -9,7 +9,7 @@ library(tidyr)
 range01 <- function(x){(x-min(x))/(max(x)-min(x))}
 
 usernames <- c('tcash21-1211', 'AbyssalThund-1713', 'Box-11924', 'Jaymz-1715', 'Loki-1239', 'RonBurgundy-1880',  
-               'Stylusbale-1453', 'Dad-12262', 'Dash-11175', 'TalibQwerty-1113', 'pjbrof-1176')
+               'Stylusbale-1453', 'Dad-12262', 'Dash-11175', 'TalibQwerty-1113', 'pjbrof-11764')
 
 base_url <- 'https://owapi.net/api/v3/u/'
 
