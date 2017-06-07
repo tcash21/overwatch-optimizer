@@ -19,7 +19,7 @@ dashboardPage(
     numericInput(inputId='tank', label="# Tank", value=2, min=0, max=6, step=1),
     numericInput(inputId='support', label="# Support", value=2, step=1, max=6),
     numericInput(inputId='defense', label="# Defense", value=0, step=1, max=6),
-    numericInput(inputId='min_gp', label='Min Games Played:',value=5),
+    numericInput(inputId='min_gp', label='Min Games Played:',value=1),
     #selectInput(inputId = 'objective', label='Optimize by: ', choices=c('Medals Per Game', 'Objective Time', 'On Fire Per Game', 'Gold Medals Per Game', 'Healing + Damage', 'Healing + Elims')),
     selectInput(inputId = 'hero', label='Select Hero to Compare Users: ', choices=sort(c(heroes)), selected = 'dva'),
     textInput(inputId='newPlayer', 'BattleTag:', value='tcash21#1211'),

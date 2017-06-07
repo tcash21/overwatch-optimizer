@@ -69,7 +69,11 @@ server <- function(input, output) {
       if(input$type == 'qp'){
         some_stats <- subset(the_stats_qp$stats, games_played >= as.numeric(input$min_gp))
       } else if (input$type == 'comp'){
+        print(the_stats$stats$games_played)
         some_stats <- subset(the_stats$stats, games_played >= as.numeric(input$min_gp))
+      }
+      if(any(some_stats$scaled == 'NaN')){
+        some_stats <- some_stats[-which(some_stats$scaled == 'NaN'),]
       }
       some_stats$id <- 1:nrow(some_stats)
       return(some_stats)
@@ -86,7 +90,7 @@ server <- function(input, output) {
     con <- rbind(t(model.matrix(~ type + 0, player_stats)), t(model.matrix(~ hero + 0, player_stats)), t(model.matrix(~ user + 0, player_stats)), rep(1, nrow(player_stats)))
     dir <- c("=", "=", "=", "=", rep("<=", length(unique(player_stats$hero))), rep("<=", length(unique(player_stats$user))), "=")
     rhs <- c(input$damage,input$defense,input$support,input$tank, rep(1, length(unique(player_stats$hero))), rep(1, length(unique(player_stats$user))), 6)
-  
+    
     obj <- player_stats$scaled
     opt <- lp("max", obj, con, dir, rhs, all.bin=TRUE)
     optcomp <- player_stats[which(opt$solution == 1),]
