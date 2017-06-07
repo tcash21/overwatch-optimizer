@@ -100,7 +100,7 @@ final$type <- char_lookup[match(final$hero, char_lookup$hero),]$type
 
 
 all_results_q <- sapply(heroes, function(x) calculateScores(x, gq))
-needed_fields_q <- lapply(all_results_q, function(x) data.frame(hero=x$hero, user=x$username, score=x$score, time_played=x$tp))
+needed_fields_q <- lapply(all_results_q, function(x) data.frame(hero=x$hero, user=x$username, score=x$score, games_played=x$tp))
 if(any(unlist(lapply(needed_fields_q, function(x) any(is.na(x)))))){
   i <- which(needed_fields_q[which(unlist(lapply(needed_fields_q, function(x) any(is.na(x)))))][[1]]$score == 'NaN')
   needed_fields_q[which(unlist(lapply(needed_fields_q, function(x) any(is.na(x)))))][[1]] <- needed_fields_q[which(unlist(lapply(needed_fields_q, function(x) any(is.na(x)))))][[1]][-i,]

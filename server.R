@@ -67,7 +67,7 @@ server <- function(input, output) {
   parseStats <- reactive({
     if(length(players$list) >= 6){
       if(input$type == 'qp'){
-        some_stats <- subset(the_stats_qp$stats, time_played >= as.numeric(input$min_gp))
+        some_stats <- subset(the_stats_qp$stats, games_played >= as.numeric(input$min_gp))
       } else if (input$type == 'comp'){
         some_stats <- subset(the_stats$stats, games_played >= as.numeric(input$min_gp))
       }
