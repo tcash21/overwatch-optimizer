@@ -26,13 +26,17 @@ g <- lapply(results, function(x) parseHeroStats(x, mode='comp'))
 gq <- lapply(results, function(x) parseHeroStats(x, mode='qp'))
 
 calculateScores <- function(hero, aLoP){
+  print(hero)
   y <- lapply(aLoP, function(x) x[[hero]])
   r <- do.call('rbind', y)
   if(!is.null(r)){
     r[which(r == 'NULL')] <- 0
-    #r <- data.frame(r)
-    r<-data.frame(unnest(data.frame(r)))
-    per_min <- r[,4:ncol(r)] / (r$tp * 60)
+    r <- data.frame(r)
+    r <- as.data.frame(lapply(r, unlist))
+    #non_per_min <- grep("time|win", colnames(r))
+    #i <- 4:ncol(r)
+    #j <- i[-match(non_per_min, i)]
+    per_min <- r[, 4:ncol(r)] / (r$tp * 60)
     colnames(per_min) <- paste0(colnames(per_min), "_per_min")
     x <- cbind(r, per_min)
     m<-x[,grep("per_min", colnames(x))]

@@ -113,8 +113,9 @@ server <- function(input, output) {
        x <- table_results_q$results[[which(names(table_results_q$results) == input$hero)]]
        x <- subset(x, tp >= as.numeric(input$min_gp))
      }
-     y<-x[, grep("per_min", colnames(x))]
-     remove <- c("win_percentage_per_min", "eliminations_per_life_per_min", "critical_hit_accuracy_per_min", "weapon_accuracy_per_min", "games_played_per_min")
+
+     y<-x[, grep("per_min|objective|time_spent", colnames(x))]
+     remove <- c("objective_time_per_min", "win_percentage_per_min", "time_spent_on_fire_per_min", "eliminations_per_life_per_min", "critical_hit_accuracy_per_min", "weapon_accuracy_per_min", "games_played_per_min")
      i <- match(remove, colnames(y), 0)
      y <- y[,-i]
      

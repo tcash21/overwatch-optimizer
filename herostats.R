@@ -38,8 +38,8 @@ parseHeroStats <- function(user, mode='comp'){
             medals=user$reaper$general_stats$medals,
             cards=user$reaper$general_stats$cards,
             games_played=user$reaper$general_stats$games_played,
-            objective_time=user$reaper$general_stats$objective_time,
-            time_spent_on_fire=user$reaper$general_stats$time_spent_on_fire,
+            objective_time_avg=user$reaper$average_stats$objective_time_average,
+            time_spent_on_fire_avg=user$reaper$average_stats$time_spent_on_fire_average,
             win_percentage=user$reaper$general_stats$win_percentage)
       }
     } else if (hero == 'reinhardt'){
@@ -68,8 +68,8 @@ parseHeroStats <- function(user, mode='comp'){
             medals=user$reinhardt$general_stats$medals,
             cards=user$reinhardt$general_stats$cards,
             games_played=user$reinhardt$general_stats$games_played,
-            objective_time=user$reinhardt$general_stats$objective_time,
-            time_spent_on_fire=user$reinhardt$general_stats$time_spent_on_fire,
+            objective_time_avg=user$reinhardt$average_stats$objective_time_average,
+            time_spent_on_fire_avg=user$reinhardt$average_stats$time_spent_on_fire_average,
             win_percentage=user$reinhardt$general_stats$win_percentage)
       }
     } else if (hero == 'zenyatta'){
@@ -99,8 +99,8 @@ parseHeroStats <- function(user, mode='comp'){
             medals=user$zenyatta$general_stats$medals,
             cards=user$zenyatta$general_stats$cards,
             games_played=user$zenyatta$general_stats$games_played,
-            objective_time=user$zenyatta$general_stats$objective_time,
-            time_spent_on_fire=user$zenyatta$general_stats$time_spent_on_fire,
+            objective_time_avg=user$zenyatta$average_stats$objective_time_average,
+            time_spent_on_fire_avg=user$zenyatta$average_stats$time_spent_on_fire_average,
             win_percentage=user$zenyatta$general_stats$win_percentage,
             transcendance_healing=user$zenyatta$general_stats$transcendence_healing,
             defensive_assists=user$zenyatta$general_stats$defensive_assists
@@ -135,8 +135,8 @@ parseHeroStats <- function(user, mode='comp'){
             medals=user$lucio$general_stats$medals,
             cards=user$lucio$general_stats$cards,
             games_played=user$lucio$general_stats$games_played,
-            objective_time=user$lucio$general_stats$objective_time,
-            time_spent_on_fire=user$lucio$general_stats$time_spent_on_fire,
+            objective_time_avg=user$lucio$average_stats$objective_time_average,
+            time_spent_on_fire_avg=user$lucio$average_stats$time_spent_on_fire_average,
             win_percentage=user$lucio$general_stats$win_percentage,
             defensive_assists=user$lucio$general_stats$defensive_assists
           )
@@ -172,8 +172,8 @@ parseHeroStats <- function(user, mode='comp'){
             medals=user$roadhog$general_stats$medals,
             cards=user$roadhog$general_stats$cards,
             games_played=user$roadhog$general_stats$games_played,
-            objective_time=user$roadhog$general_stats$objective_time,
-            time_spent_on_fire=user$roadhog$general_stats$time_spent_on_fire,
+            objective_time_avg=user$roadhog$average_stats$objective_time_average,
+            time_spent_on_fire_avg=user$roadhog$average_stats$time_spent_on_fire_average,
             win_percentage=user$roadhog$general_stats$win_percentage
           )
       }
@@ -205,8 +205,8 @@ parseHeroStats <- function(user, mode='comp'){
             medals=user$pharah$general_stats$medals,
             cards=user$pharah$general_stats$cards,
             games_played=user$pharah$general_stats$games_played,
-            objective_time=user$pharah$general_stats$objective_time,
-            time_spent_on_fire=user$pharah$general_stats$time_spent_on_fire,
+            objective_time_avg=user$pharah$average_stats$objective_time_average,
+            time_spent_on_fire_avg=user$pharah$average_stats$time_spent_on_fire_average,
             win_percentage=user$pharah$general_stats$win_percentage
           )
       }
@@ -240,8 +240,8 @@ parseHeroStats <- function(user, mode='comp'){
             medals=user$mercy$general_stats$medals,
             cards=user$mercy$general_stats$cards,
             games_played=user$mercy$general_stats$games_played,
-            objective_time=user$mercy$general_stats$objective_time,
-            time_spent_on_fire=user$mercy$general_stats$time_spent_on_fire,
+            objective_time_avg=user$mercy$average_stats$objective_time_average,
+            time_spent_on_fire_avg=user$mercy$average_stats$time_spent_on_fire_average,
             win_percentage=user$mercy$general_stats$win_percentage,
             blaster_kills=user$mercy$general_stats$blaster_kills,
             defensive_assists=user$mercy$general_stats$defensive_assists,
@@ -280,8 +280,8 @@ parseHeroStats <- function(user, mode='comp'){
             medals=user$soldier76$general_stats$medals,
             cards=user$soldier76$general_stats$cards,
             games_played=user$soldier76$general_stats$games_played,
-            objective_time=user$soldier76$general_stats$objective_time,
-            time_spent_on_fire=user$soldier76$general_stats$time_spent_on_fire,
+            objective_time_avg=user$soldier76$average_stats$objective_time_average,
+            time_spent_on_fire_avg=user$soldier76$average_stats$time_spent_on_fire_average,
             win_percentage=user$soldier76$general_stats$win_percentage
           )
       }
@@ -314,8 +314,8 @@ parseHeroStats <- function(user, mode='comp'){
             medals=user$dva$general_stats$medals,
             cards=user$dva$general_stats$cards,
             games_played=user$dva$general_stats$games_played,
-            objective_time=user$dva$general_stats$objective_time,
-            time_spent_on_fire=user$dva$general_stats$time_spent_on_fire,
+            objective_time_avg=user$dva$average_stats$objective_time_average,
+            time_spent_on_fire_avg=user$dva$average_stats$time_spent_on_fire_average,
             win_percentage=user$dva$general_stats$win_percentage,
             self_destruct_kills=user$dva$general_stats$self_destruct_kills
           )
@@ -351,8 +351,8 @@ parseHeroStats <- function(user, mode='comp'){
             medals=user$mei$general_stats$medals,
             cards=user$mei$general_stats$cards,
             games_played=user$mei$general_stats$games_played,
-            objective_time=user$mei$general_stats$objective_time,
-            time_spent_on_fire=user$mei$general_stats$time_spent_on_fire,
+            objective_time_avg=user$mei$average_stats$objective_time_average,
+            time_spent_on_fire_avg=user$mei$average_stats$time_spent_on_fire_average,
             win_percentage=user$mei$general_stats$win_percentage
           )
       }
@@ -382,8 +382,8 @@ parseHeroStats <- function(user, mode='comp'){
             medals=user$genji$general_stats$medals,
             cards=user$genji$general_stats$cards,
             games_played=user$genji$general_stats$games_played,
-            objective_time=user$genji$general_stats$objective_time,
-            time_spent_on_fire=user$genji$general_stats$time_spent_on_fire,
+            objective_time_avg=user$genji$average_stats$objective_time_average,
+            time_spent_on_fire_avg=user$genji$average_stats$time_spent_on_fire_average,
             win_percentage=user$genji$general_stats$win_percentage
           )
       }
@@ -414,8 +414,8 @@ parseHeroStats <- function(user, mode='comp'){
             medals=user$tracer$general_stats$medals,
             cards=user$tracer$general_stats$cards,
             games_played=user$tracer$general_stats$games_played,
-            objective_time=user$tracer$general_stats$objective_time,
-            time_spent_on_fire=user$tracer$general_stats$time_spent_on_fire,
+            objective_time_avg=user$tracer$average_stats$objective_time_average,
+            time_spent_on_fire_avg=user$tracer$average_stats$time_spent_on_fire_average,
             win_percentage=user$tracer$general_stats$win_percentage
           )
       }
@@ -442,10 +442,10 @@ parseHeroStats <- function(user, mode='comp'){
             medals=user$winston$general_stats$medals,
             cards=user$winston$general_stats$cards,
             games_played=user$winston$general_stats$games_played,
-            objective_time=user$winston$general_stats$objective_time,
+            objective_time_avg=user$winston$average_stats$objective_time_average,
             primal_rage_kill=user$winston$general_stats$primal_rage_kills,
             solo_kills=user$winston$general_stats$solo_kills,
-            time_spent_on_fire=user$winston$general_stats$time_spent_on_fire,
+            time_spent_on_fire_avg=user$winston$average_stats$time_spent_on_fire_average,
             win_percentage=user$winston$general_stats$win_percentage
           )
       }
@@ -476,8 +476,8 @@ parseHeroStats <- function(user, mode='comp'){
             medals=user$zarya$general_stats$medals,
             cards=user$zarya$general_stats$cards,
             games_played=user$zarya$general_stats$games_played,
-            objective_time=user$zarya$general_stats$objective_time,
-            time_spent_on_fire=user$zarya$general_stats$time_spent_on_fire,
+            objective_time_avg=user$zarya$average_stats$objective_time_average,
+            time_spent_on_fire_avg=user$zarya$average_stats$time_spent_on_fire_average,
             win_percentage=user$zarya$general_stats$win_percentage
           )
       }
@@ -510,8 +510,8 @@ parseHeroStats <- function(user, mode='comp'){
             medals=user$ana$general_stats$medals,
             cards=user$ana$general_stats$cards,
             games_played=user$ana$general_stats$games_played,
-            objective_time=user$ana$general_stats$objective_time,
-            time_spent_on_fire=user$ana$general_stats$time_spent_on_fire,
+            objective_time_avg=user$ana$average_stats$objective_time_average,
+            time_spent_on_fire_avg=user$ana$average_stats$time_spent_on_fire_average,
             win_percentage=user$ana$general_stats$win_percentage,
             defensive_assists=user$ana$general_stats$defensive_assists,
             enemies_slept=user$ana$general_stats$enemies_slept
@@ -545,7 +545,7 @@ parseHeroStats <- function(user, mode='comp'){
             medals=user$bastion$general_stats$medals,
             cards=user$bastion$general_stats$cards,
             games_played=user$bastion$general_stats$games_played,
-            time_spent_on_fire=user$bastion$general_stats$time_spent_on_fire,
+            time_spent_on_fire_avg=user$bastion$average_stats$time_spent_on_fire_average,
             win_percentage=user$bastion$general_stats$win_percentage
           )
       }
@@ -572,9 +572,9 @@ parseHeroStats <- function(user, mode='comp'){
             medals=user$symmetra$general_stats$medals,
             cards=user$symmetra$general_stats$cards,
             games_played=user$symmetra$general_stats$games_played,
-            objective_time=user$symmetra$general_stats$objective_time,
+            objective_time_avg=user$symmetra$average_stats$objective_time_average,
             damage_blocked=user$symmetra$general_stats$damage_blocked,
-            time_spent_on_fire=user$symmetra$general_stats$time_spent_on_fire,
+            time_spent_on_fire_avg=user$symmetra$average_stats$time_spent_on_fire_average,
             win_percentage=user$symmetra$general_stats$win_percentage
             
           )
@@ -590,7 +590,7 @@ parseHeroStats <- function(user, mode='comp'){
             rip_tire_kills=user$junkrat$hero_stats$rip_tire_kills,
             games_played=user$junkrat$general_stats$games_played,
             shots_hit=user$junkrat$general_stats$shots_hit,
-            time_spent_on_fire=user$junkrat$general_stats$time_spent_on_fire,
+            time_spent_on_fire_avg=user$junkrat$average_stats$time_spent_on_fire_average,
             cards=user$junkrat$general_stats$cards,
             medals_gold=user$junkrat$general_stats$medals_gold,
             damage_done=user$junkrat$general_stats$damage_done,
@@ -598,7 +598,7 @@ parseHeroStats <- function(user, mode='comp'){
             medals_silver=user$junkrat$general_stats$medals_silver,
             final_blows=user$junkrat$general_stats$final_blows,
             medals_bronze=user$junkrat$general_stats$medals_bronze,
-            objective_time=user$junkrat$general_stats$objective_time,
+            objective_time_avg=user$junkrat$average_stats$objective_time_average,
             objective_kills=user$junkrat$general_stats$objective_kills,
             solo_kills=user$junkrat$general_stats$solo_kills,
             shots_fired=user$junkrat$general_stats$shots_fired,
