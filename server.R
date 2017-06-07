@@ -115,7 +115,7 @@ server <- function(input, output) {
      }
 
      y<-x[, grep("per_min|objective|time_spent", colnames(x))]
-     remove <- c("objective_time_per_min", "win_percentage_per_min", "time_spent_on_fire_per_min", "eliminations_per_life_per_min", "critical_hit_accuracy_per_min", "weapon_accuracy_per_min", "games_played_per_min")
+     remove <- c("objective_time_avg_per_min", "win_percentage_per_min", "time_spent_on_fire_avg_per_min", "eliminations_per_life_per_min", "critical_hit_accuracy_per_min", "weapon_accuracy_per_min", "games_played_per_min")
      i <- match(remove, colnames(y), 0)
      y <- y[,-i]
      
