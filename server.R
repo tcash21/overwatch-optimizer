@@ -42,7 +42,7 @@ server <- function(input, output) {
         scaled_scores <- lapply(needed_fields, function(y) range01(y$score))
         updated <- mapply(cbind, needed_fields, scaled=scaled_scores)
         updated <-do.call('rbind', updated)
-        updated$type <- char_lookup[match(updated$hero, char_type$heroes),]$type
+        updated$type <- char_lookup[match(updated$hero, char_lookup$heroes),]$type
         the_stats$stats <- updated
         the_stats_qp$stats <- updated
     })
