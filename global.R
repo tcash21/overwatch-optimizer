@@ -97,7 +97,9 @@ final <- mapply(cbind, needed_fields, scaled=scaled_scores)
 
 final <-do.call('rbind', final)
 final$type <- char_lookup[match(final$hero, char_lookup$hero),]$type
-
+if(any(final$score == 'NaN')){
+  final <- final[-which(final$score == 'NaN'),]
+}
 
 all_results_q <- sapply(heroes, function(x) calculateScores(x, gq))
 needed_fields_q <- lapply(all_results_q, function(x) data.frame(hero=x$hero, user=x$username, score=x$score, games_played=x$tp))

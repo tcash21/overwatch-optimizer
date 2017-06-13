@@ -69,7 +69,6 @@ server <- function(input, output) {
       if(input$type == 'qp'){
         some_stats <- subset(the_stats_qp$stats, games_played >= as.numeric(input$min_gp))
       } else if (input$type == 'comp'){
-        print(the_stats$stats$games_played)
         some_stats <- subset(the_stats$stats, games_played >= as.numeric(input$min_gp))
       }
       if(any(some_stats$scaled == 'NaN')){
@@ -88,9 +87,15 @@ server <- function(input, output) {
     player_stats$hero <- as.character(player_stats$hero)
     player_stats$user <- as.character(player_stats$user)
     con <- rbind(t(model.matrix(~ type + 0, player_stats)), t(model.matrix(~ hero + 0, player_stats)), t(model.matrix(~ user + 0, player_stats)), rep(1, nrow(player_stats)))
-    dir <- c("=", "=", "=", "=", rep("<=", length(unique(player_stats$hero))), rep("<=", length(unique(player_stats$user))), "=")
-    rhs <- c(input$damage,input$defense,input$support,input$tank, rep(1, length(unique(player_stats$hero))), rep(1, length(unique(player_stats$user))), 6)
     
+    if(length(unique(player_stats$type)) == 4){
+      dir <- c("=", "=", "=", "=", rep("<=", length(unique(player_stats$hero))), rep("<=", length(unique(player_stats$user))), "=")
+      rhs <- c(input$damage,input$defense,input$support,input$tank, rep(1, length(unique(player_stats$hero))), rep(1, length(unique(player_stats$user))), 6)
+    } else {
+      dir <- c("=", "=", "=", rep("<=", length(unique(player_stats$hero))), rep("<=", length(unique(player_stats$user))), "=")
+      rhs <- c(input$damage,input$support,input$tank, rep(1, length(unique(player_stats$hero))), rep(1, length(unique(player_stats$user))), 6)
+    }
+
     obj <- player_stats$scaled
     opt <- lp("max", obj, con, dir, rhs, all.bin=TRUE)
     optcomp <- player_stats[which(opt$solution == 1),]
@@ -118,7 +123,7 @@ server <- function(input, output) {
        x <- table_results_q$results[[which(names(table_results_q$results) == input$hero)]]
        x <- subset(x, tp >= as.numeric(input$min_gp))
      }
-
+    
      y<-x[, grep("per_min|objective|time_spent", colnames(x))]
      remove <- c("objective_time_avg_per_min", "win_percentage_per_min", "time_spent_on_fire_avg_per_min", "eliminations_per_life_per_min", "critical_hit_accuracy_per_min", "weapon_accuracy_per_min", "games_played_per_min")
      i <- match(remove, colnames(y), 0)
@@ -127,6 +132,7 @@ server <- function(input, output) {
      y <- cbind(x$user, range01(x$score), x[,gsub("_per_min", "", remove[which(i != 0)])],  y)
      colnames(y)[1:2] <- c("User", "Score")
      y <- y[order(y$Score, decreasing=TRUE),]
+     y<-y[,match(unique(colnames(y)), colnames(y))]
      datatable(y, caption=paste0('User stats for ', input$hero), options = list(scrollX = TRUE, order = list(2, 'desc')))
       })
    
